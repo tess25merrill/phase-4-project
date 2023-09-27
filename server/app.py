@@ -67,7 +67,8 @@ class UserById(Resource):
         
         return make_response(user.to_dict(), 200)
 
-    def post(self)
+    def post(self):
+        pass
                  
 
 class LegoPiece(Resource):
@@ -101,11 +102,13 @@ class UserLegoPiecesById(Resource):
 
 
 
+
+
 api.add_resource(Users, '/users',)
 api.add_resource(UserById, '/users/<int:id>',)   
 api.add_resource(LegoPieces, '/legopieces',)
 api.add_resource(LegoPiecesById, '/legopieces/<int:id>',)
-api.add_resource(UserLegoPiecesById, '/hero_powers')
+api.add_resource(UserLegoPiecesById, '')
 
 
 if __name__ == '__main__':
@@ -114,11 +117,7 @@ if __name__ == '__main__':
 
 
 
-
-
-
-
-
+# Add Functinoality for the Lego Data Base API "Rebrickable" and cross check it with userlegopiece database
 
 
 

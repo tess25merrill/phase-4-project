@@ -103,3 +103,8 @@ class UserLegoPieces(db.Model, SerializerMixin):
             return count
         else:
             self.validation_errors.append('Count must be an integer.')
+            
+            
+            
+            
+            
