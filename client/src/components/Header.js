@@ -2,18 +2,14 @@ import React from 'react';
 
 function Header() {
   return (
-    <header>
-      <div className="logo">
-        <img src="/logo.png" alt="Logo" />
-      </div>
-      <div className="welcome">
-        <p>Welcome to Your App Name</p>
-      </div>
-    </header>
+    <div>
+      <p>Welcome to Our Lego Inventory!</p>
+    </div>
   );
 }
 
 export default Header;
+
 
 // //import React from 'react';
 
