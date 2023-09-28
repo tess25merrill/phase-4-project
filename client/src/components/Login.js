@@ -10,7 +10,7 @@ function Login() {
   const handleSignIn = () => {
     // Add logic for signing in here.
     // Check username and password, and if they are correct, redirect to the welcome page.
-    // Use an authentication library or your own logic for signing in.
+   
     if (username === 'exampleUser' && password === 'examplePassword') {
       history.push('/welcome'); // Redirect to the welcome page upon successful sign-in.
     } else {
@@ -37,7 +37,7 @@ function Login() {
       return;
     }
   
-    // use backend API endpoint for creating accounts, you can make a POST request
+    // use our backend API endpoint for creating accounts,  POST request
 
     fetch('/api/create-account', {
       method: 'POST',
@@ -56,7 +56,7 @@ function Login() {
           history.push('/welcome');
         } else {
           // Account creation failed, handle the error.
-          alert(data.message); // You can display an error message to the user.
+          alert(data.message); // display an error message to the user.
         }
       })
       .catch((error) => {
