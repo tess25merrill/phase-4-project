@@ -4,6 +4,7 @@ function Header() {
   return (
     <div>
       <p>Welcome to Our Lego Inventory!</p>
+      <img src='/Everyone_Is_Awesome.jpg' alt='Everyone is Awesome!'></img>
     </div>
   );
 }

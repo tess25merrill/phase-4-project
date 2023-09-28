@@ -1,18 +1,45 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-function Login() {
+function Login({userList}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
   const history = useHistory();
+  const [postNewAccount, setPostNewAccount] = useState('')
+
+  fetch('http://localhost:5555/api/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username,
+      password,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Account creation was successful, redirect to the welcome page.
+        history.push('/inventory');
+      } else {
+        // Account creation failed, handle the error.
+        alert(data.message); // display an error message to the user.
+      }
+    })
+    .catch((error) => {
+      // Handle network or other errors.
+      alert('An error occurred while creating the account. Please try again later.');
+    });
+
 
   const handleSignIn = () => {
     // Add logic for signing in here.
     // Check username and password, and if they are correct, redirect to the welcome page.
    
     if (username === 'exampleUser' && password === 'examplePassword') {
-      history.push('/welcome'); // Redirect to the welcome page upon successful sign-in.
+      history.push('/inventory'); // Redirect to the welcome page upon successful sign-in.
     } else {
       alert('Incorrect username or password');
     }
@@ -38,31 +65,6 @@ function Login() {
     }
   
     // use our backend API endpoint for creating accounts,  POST request
-
-    fetch('/api/create-account', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          // Account creation was successful, redirect to the welcome page.
-          history.push('/welcome');
-        } else {
-          // Account creation failed, handle the error.
-          alert(data.message); // display an error message to the user.
-        }
-      })
-      .catch((error) => {
-        // Handle network or other errors.
-        alert('An error occurred while creating the account. Please try again later.');
-      });
   };
   
   return (

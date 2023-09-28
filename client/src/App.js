@@ -10,14 +10,23 @@ import Login from './components/Login';
   //return <h1>Project Client</h1>;
 
   function App() {
+
+    const[userList, setUserList] = useState([])
+
+    useEffect(() => {
+      fetch('http://localhost:5555/api/users')
+        .then(r => r.json())
+        .then(data => setUserList(data))
+    }, [])
+
   return (
     <Router>
       <div className="App">
         <Header />
         <NavBar /> {/* Include the NavBar component */}
         <Switch>
-        <Route path="/welcome" component={Welcome} /> {/* Route to the Welcome component */}
-          <Route path="/login" component={Login} /> {/* Route to the Login component */}
+        <Route path="/inventory" component={Inventory} /> {/* Route to the Inventory component */}
+          <Route path="/login" component={Login} userList={userList}/> {/* Route to the Login component */}
         </Switch>
       </div>
     </Router>

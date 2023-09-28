@@ -1,8 +1,10 @@
 from flask import Flask, request, make_response
 from flask_migrate import Migrate
+from config import app, db, api
 from flask_restful import Api, Resource
 from models import db, User, LegoPieces, UserLegoPieces
 import os
+
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.environ.get(
@@ -12,6 +14,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
+
 
 migrate = Migrate(app, db)
 api = Api(app)
@@ -102,13 +105,10 @@ class UserLegoPiecesById(Resource):
 
 
 
-
-
-api.add_resource(Users, '/users',)
-api.add_resource(UserById, '/users/<int:id>',)   
-api.add_resource(LegoPieces, '/legopieces',)
-api.add_resource(LegoPiecesById, '/legopieces/<int:id>',)
-api.add_resource(UserLegoPiecesById, '')
+api.add_resource(Users, '/users')
+api.add_resource(UserById, '/users/<int:id>')
+api.add_resource(LegoPiece, '/legopieces')
+api.add_resource(UserLegoPiecesById, '/userlegopieces/<int:id>')
 
 
 if __name__ == '__main__':
@@ -117,7 +117,7 @@ if __name__ == '__main__':
 
 
 
-# Add Functinoality for the Lego Data Base API "Rebrickable" and cross check it with userlegopiece database
+# Add Functinoality for the Lego Data Base API "Rebrickable" and cross check it with userlegopiece database (front end in component we do ALL of this, dont add anything to back end)
 
 
 
@@ -126,21 +126,19 @@ if __name__ == '__main__':
 # Standard library imports
 
 # Remote library imports
-from flask import request
-from flask_restful import Resource
 
 # Local imports
-from config import app, db, api
+
 # Add your model imports
 
 
 # Views go here!
 
-@app.route('/')
-def index():
-    return '<h1>Project Server</h1>'
+# @app.route('/')
+# def index():
+#     return '<h1>Project Server</h1>'
 
 
-if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+# if __name__ == '__main__':
+#     app.run(port=5555, debug=True)
 
