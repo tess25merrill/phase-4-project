@@ -1,62 +1,52 @@
-from flask import Flask, request, make_response
+#!/usr/bin/env python3
+
+from flask import Flask, request, make_response, session
 from flask_migrate import Migrate
-from config import app, db, api
 from flask_restful import Api, Resource
-from models import db, User, LegoPieces, UserLegoPieces
 import os
 
+# Local imports
+from config import app, db, api
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASE = os.environ.get(
-    "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
+# Model imports
+from models import *
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.json.compact = False
+# BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+# DATABASE = os.environ.get(
+#     "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
+
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.json.compact = False
 
 
-migrate = Migrate(app, db)
-api = Api(app)
-db.init_app(app)
+# migrate = Migrate(app, db)
+# api = Api(app)
+# db.init_app(app)
 
-@app.route('/')
-
-def index():
-
-    return '<</h1>'
+# @app.route('/')
+# def index():
+#     return '</h1>'
 
 
 class Users(Resource):
-    
     def get(self):
-        users = [user.to_dict(rules=('-legopieces', 'userlegopieces',)) for user in 
-                 Users.query.all()]
-        
+        users = [user.to_dict(rules=('-lego_pieces', 'user_lego_pieces',)) for user in User.query.all()]
         return make_response(users, 200)
     
-
     def post(self):
-
-        new_user = User()
-
         data = request.get_json()
+        new_user = User()
         try:
-
             for key in data:
-
                 setattr(new_user, key, data[key])
-
             db.session.add(new_user)
-
             db.session.commit()
-
-            return make_response(new_user.to_dict(rules=('-legopieces', '-userlegopieces',)), 201) 
+            return make_response(new_user.to_dict(rules=('-lego_pieces', '-user_lego_pieces',)), 201) 
         
         except ValueError as error:
-
             new_error = {"validation errors": str(error)}
-
             return make_response(new_error, 400)
 
     
@@ -71,13 +61,12 @@ class UserById(Resource):
         return make_response(user.to_dict(), 200)
 
     def post(self):
-        pass
-                 
+        print("Ethan was here")
 
 class LegoPiece(Resource):
     def get(self):
-        lego_pieces = [lego_piece.to_dict(rules=('-userlegopieces', '-user',)) 
-                       
+        lego_pieces = [lego_piece.to_dict(rules=('-user_lego_pieces', '-user',)) 
+            
         for lego_piece in LegoPieces.query.all()]
         return make_response(lego_pieces, 200)
     
@@ -97,7 +86,7 @@ class UserLegoPiecesById(Resource):
                 setattr(new_user, key, data[key])
             db.session.add(new_lego_piece)
             db.session.commit()
-            return make_response(new_lego_piece.to_dict(rules=('-legopieces', '-user',)), 201) 
+            return make_response(new_lego_piece.to_dict(rules=('-lego_pieces', '-user',)), 201) 
         
         except ValueError as error:
             new_error = {"validation errors": str(error)}
@@ -105,14 +94,13 @@ class UserLegoPiecesById(Resource):
 
 
 
-api.add_resource(Users, '/users')
-api.add_resource(UserById, '/users/<int:id>')
-api.add_resource(LegoPiece, '/legopieces')
-api.add_resource(UserLegoPiecesById, '/userlegopieces/<int:id>')
+api.add_resource(Users, '/users',)
+api.add_resource(UserById, '/users/<int:id>',)
+api.add_resource(LegoPiece, '/lego_pieces',)
+api.add_resource(UserLegoPiecesById, '/user_lego_pieces/<int:id>',)
 
 
 if __name__ == '__main__':
-
     app.run(port=5555, debug=True)
 
 
@@ -120,8 +108,6 @@ if __name__ == '__main__':
 # Add Functinoality for the Lego Data Base API "Rebrickable" and cross check it with userlegopiece database (front end in component we do ALL of this, dont add anything to back end)
 
 
-
-#!/usr/bin/env python3
 
 # Standard library imports
 
