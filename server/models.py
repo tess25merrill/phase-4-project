@@ -1,43 +1,37 @@
-
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy.ext.associationproxy import association_proxy
-from config import db
 
-# metadata = MetaData(naming_convention={
-#     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-# })
+metadata = MetaData(naming_convention={
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+})
 
-# db = SQLAlchemy(metadata=metadata)
-
-# Models go here!
+db = SQLAlchemy(metadata=metadata)
 
 class User(db.Model, SerializerMixin):
     __tablename__= 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String)
-    password = db.Column(db.String)
+    name = db.Column(db.String)
+    password = db.Column(db.String, nullable=False)
 
-#Relationship
+    userlegos = db.relationship('Userlego', cascade='all, delete', backref='user')
 
-    userlegopieces = db.relationship('UserLegoPieces', cascade='all, delete', backref='user')
+    serialize_rules = ("-userlegos.user",)
 
-#Validation
     validation_errors = []
 
     @classmethod
     def clear_validation_errors(cls):
         cls.validation_errors = []
 
-    @validates('user_name')
-    def validate_user_name(self, key, user_name):
-        if type(user_name) is str and len(user_name) < 21:
-            return user_name
+    @validates('name')
+    def validate_name(self, key, name):
+        if type(name) is str and len(name) < 21:
+            return name
         else:
-            self.validation_errors.append('Username must be a string 20 character or less.')
+            self.validation_errors.append('name must be a string 20 character or less.')
 
     @validates('password')
     def validate_password(self, key, password):
@@ -46,18 +40,18 @@ class User(db.Model, SerializerMixin):
         else:
             self.validation_errors.append('Password must be at least 8 characters.')
 
-class LegoPieces(db.Model, SerializerMixin): 
-    __tablename__ = 'lego_pieces'
+class Lego (db.Model, SerializerMixin): 
+    __tablename__ = 'legos'
 
     id = db.Column(db.Integer, primary_key = True)
-    piece_num = db.Column(db.Integer)
+    piece_num = db.Column(db.Integer, nullable=False)
 
 #relationships
 
-    userlegopieces = db.relationship('UserLegoPieces', cascade='all, delete', backref='lego_pieces')
+    userlegos = db.relationship('Userlego', cascade='all, delete', backref='lego')
 
 #serialization
-    serialize_rules = ("-user_lego_pieces.lego_pieces")
+    serialize_rules = ("-userlegos.lego")
 
 #Validations
     validation_errors = []
@@ -73,18 +67,18 @@ class LegoPieces(db.Model, SerializerMixin):
         else:
             self.validation_errors.append('Piece Number must be an integer.')
 
-class UserLegoPieces(db.Model, SerializerMixin):
-    __tablename__ = 'user_lego_pieces'
+class Userlego (db.Model, SerializerMixin):
+    __tablename__ = 'userlegos'
     
     id = db.Column(db.Integer, primary_key = True)
     count = db.Column(db.Integer, nullable=False)
 
 #relationships
-    lego_piece_id = db.Column(db.Integer, db.ForeignKey('lego_pieces.id'), nullable=False) 
+    lego_piece_id = db.Column(db.Integer, db.ForeignKey('legos.id'), nullable=False) 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 #serialization
-    serialize_rules = ("-lego_pieces.user_lego_pieces", "-user.user_lego_pieces")
+    serialize_rules = ("-lego.userlegos", "-user.userlegos")
 
 #Validations
     validation_errors = []

@@ -12,7 +12,7 @@ function Inventory(){
     }
 
     const fetchLegos = () => {
-        fetch("http://localhost:5555/lego_pieces")
+        fetch("http://localhost:5555/legos")
         .then(r=>r.json())
         .then(setLegos)
     }

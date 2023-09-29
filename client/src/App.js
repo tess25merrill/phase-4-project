@@ -14,7 +14,7 @@ import Login from './components/Login';
     const[userList, setUserList] = useState([])
 
     useEffect(() => {
-      fetch('http://localhost:5555/api/users')
+      fetch('http://localhost:5555/users')
         .then(r => r.json())
         .then(data => setUserList(data))
     }, [])
@@ -25,8 +25,8 @@ import Login from './components/Login';
         <Header />
         <NavBar /> {/* Include the NavBar component */}
         <Switch>
-        <Route path="/inventory" component={Inventory} /> {/* Route to the Inventory component */}
-          <Route path="/login" component={Login} userList={userList}/> {/* Route to the Login component */}
+          <Route path="/inventory" component={Inventory} /> {/* Route to the Inventory component */}
+          <Route path="/login" component={Login}/> {/* Route to the Login component */}
         </Switch>
       </div>
     </Router>
