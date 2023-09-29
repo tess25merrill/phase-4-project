@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import LegoList from "./LegoList";
 import LegoForm from "./LegoForm";
 
@@ -11,13 +11,32 @@ function Inventory(){
         setLegoToEdit(legoPiece)
     }
 
-    //useEffect() for Lego inventory from db
-    //double check how that works...
+    const fetchLegos = () => {
+        fetch("http://localhost:5555/lego_pieces")
+        .then(r=>r.json())
+        .then(setLegos)
+    }
+
+    useEffect(fetchLegos, [] )
 
     const updateLegoPieceInfo = (e, editedLegoPiece) => {
         e.preventDefault()
-        //PATCH REQUEST
-        //update setLegos
+        if (legoToEdit) {
+            editedLegoPiece.id = legoToEdit.id
+            fetch('url/lego.id', {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+                'accept': 'application/json'
+            },
+            body: JSON.stringify(editedLegoPiece)
+        })
+        .then(r => r.json())
+        .then(legoData => {
+            const updateInventoryList = legos.map(lego => lego.id === legoData.id ? legoData : legos)
+            setLegos(updateInventoryList)
+        })
+        }
     }
 
     return (
