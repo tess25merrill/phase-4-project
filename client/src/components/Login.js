@@ -6,9 +6,39 @@ function Login({userList}) {
   const [password, setPassword] = useState('');
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
   const history = useHistory();
-  const [postNewAccount, setPostNewAccount] = useState('')
+ // const [postNewAccount, setPostNewAccount] = useState('')
 
-  fetch('http://localhost:5555/api/users', {
+
+  const handleSignIn = () => {
+    // Add logic for signing in here.
+    // Check username and password, and if they are correct, redirect to the welcome page.
+  
+    if (username === 'exampleUser' && password === 'examplePassword') {
+      history.push('/inventory'); // Redirect to the welcome page upon successful sign-in.
+    } else {
+      alert('Incorrect username or password');
+    }
+  };
+
+  const handleCreateAccount = () => {
+    setIsCreatingAccount(true);
+    // Redirect to the account creation page.
+    history.push('/create-account');
+  };
+
+  const handleCancelCreateAccount = () => {
+    setIsCreatingAccount(false);
+  };
+
+  const handleCreateAccountSubmit = (e) => {
+   // e.preventdefault();
+    // Validate user input (e.g., check if username and password are not empty)
+
+    if (!username || !password) {
+      alert('Please enter a username and password');
+      return;
+    }
+    fetch('http://localhost:5555/users', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -32,38 +62,6 @@ function Login({userList}) {
       // Handle network or other errors.
       alert('An error occurred while creating the account. Please try again later.');
     });
-
-
-  const handleSignIn = () => {
-    // Add logic for signing in here.
-    // Check username and password, and if they are correct, redirect to the welcome page.
-   
-    if (username === 'exampleUser' && password === 'examplePassword') {
-      history.push('/inventory'); // Redirect to the welcome page upon successful sign-in.
-    } else {
-      alert('Incorrect username or password');
-    }
-  };
-
-  const handleCreateAccount = () => {
-    setIsCreatingAccount(true);
-    // Redirect to the account creation page.
-    history.push('/create-account');
-  };
-
-  const handleCancelCreateAccount = () => {
-    setIsCreatingAccount(false);
-  };
-
-  const handleCreateAccountSubmit = () => {
-
-    // Validate user input (e.g., check if username and password are not empty)
-
-    if (!username || !password) {
-      alert('Please enter a username and password');
-      return;
-    }
-  
     // use our backend API endpoint for creating accounts,  POST request
   };
   

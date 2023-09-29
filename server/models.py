@@ -1,15 +1,16 @@
-from config import db
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
+from config import db
 
-metadata = MetaData(naming_convention={
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-})
+# metadata = MetaData(naming_convention={
+#     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+# })
 
-db = SQLAlchemy(metadata=metadata)
+# db = SQLAlchemy(metadata=metadata)
 
 # Models go here!
 
@@ -53,10 +54,10 @@ class LegoPieces(db.Model, SerializerMixin):
 
 #relationships
 
-    userlegopieces = db.relationship('UserLegoPieces', cascade='all, delete', backref='legopieces')
+    userlegopieces = db.relationship('UserLegoPieces', cascade='all, delete', backref='lego_pieces')
 
 #serialization
-    serialize_rules = ("-userlegopieces.lego_pieces")
+    serialize_rules = ("-user_lego_pieces.lego_pieces")
 
 #Validations
     validation_errors = []
@@ -79,12 +80,12 @@ class UserLegoPieces(db.Model, SerializerMixin):
     count = db.Column(db.Integer, nullable=False)
 
 #relationships
-    lego_piece_id = db.Column(db.Integer, db.ForeignKey('legopieces.id'), nullable=False) 
+    lego_piece_id = db.Column(db.Integer, db.ForeignKey('lego_pieces.id'), nullable=False) 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 #serialization
-    serialize_rules = ("-legopieces.userlegopieces", "-user.userlegopieces")
- 
+    serialize_rules = ("-lego_pieces.user_lego_pieces", "-user.user_lego_pieces")
+
 #Validations
     validation_errors = []
 
