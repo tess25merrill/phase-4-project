@@ -1,12 +1,12 @@
 import React from "react";
-import LegoPiece from "./LegoPiece";
+import Lego from "./Lego";
 
 function LegoList({renderForm, legos}) {
 
-    const renderLegos = legos.map((legoPiece) => {
-        return <LegoPiece
-            key={legoPiece.id}
-            legoPiece={legoPiece}
+    const renderLegos = legos.map((lego) => {
+        return <Lego
+            key={lego.id}
+            lego={lego}
             renderForm={renderForm}
             />
             //Add piece_num and quantity fields

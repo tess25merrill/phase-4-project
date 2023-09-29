@@ -74,7 +74,7 @@ class Userlego (db.Model, SerializerMixin):
     count = db.Column(db.Integer, nullable=False)
 
 #relationships
-    lego_piece_id = db.Column(db.Integer, db.ForeignKey('legos.id'), nullable=False) 
+    lego_id = db.Column(db.Integer, db.ForeignKey('legos.id'), nullable=False) 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 #serialization

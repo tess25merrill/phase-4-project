@@ -12,7 +12,7 @@ function Login() {
     // Add logic for signing in here.
     // Check username and password, and if they are correct, redirect to the welcome page.
 
-    if (true) {
+    if (username === 'UserName' && password === 'Password') {
       history.push('/inventory'); // Redirect to the welcome page upon successful sign-in.
     } else {
       alert('Incorrect username or password');

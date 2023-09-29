@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+//import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from './components/Header';
 import NavBar from './components/NavBar';
-import Account from './components/Account';
+//import Account from './components/Account';
 import Inventory from './components/Inventory';
 import Login from './components/Login';
 
@@ -11,13 +11,13 @@ import Login from './components/Login';
 
   function App() {
 
-    const[userList, setUserList] = useState([])
+    // const[userList, setUserList] = useState([])
 
-    useEffect(() => {
-      fetch('http://localhost:5555/users')
-        .then(r => r.json())
-        .then(data => setUserList(data))
-    }, [])
+    // useEffect(() => {
+    // fetch('http://localhost:5555/users')
+    //      .then(r => r.json())
+    //      .then(data => setUserList(data))
+    //  }, [])
 
   return (
     <Router>

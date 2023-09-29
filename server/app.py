@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, session
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
@@ -24,9 +24,31 @@ db.init_app(app)
 
 @app.route('/')
 def home():
-    return '<Welcome to LegoInventory Server!</h1>'
+    return 'Welcome to LegoInventory Server!'
 
+@app.route('/login', methods=['POST'])
+def login():
+    """
+    Sign in a user.
+    """
+    data = request.get_json()
 
+    try:
+        user = User.query.filter_by(name=data['name']).first()
+        if user and user.check_password(data['password']):
+      
+            session['user_id'] = user.id
+
+            response = {
+                'id': user.id,  
+                'username': user.name,
+            }
+            return make_response(response, 200)
+    except KeyError:
+        response = {'error': 'Invalid email or password.'}
+        return make_response(response, 401)
+
+    
 class Users(Resource):
     def get(self):
         users = [user.to_dict(rules=('-legos', 'userlegos',)) for user in User.query.all()]
@@ -67,11 +89,23 @@ class Legos(Resource):
         return make_response(legos, 200)
     
 
-# class LegoById
+class LegoById(Resource):
+    def get(self, id):
+        lego = LegoById.query.filter(Lego.id ==id).first()
+        
+        if not lego:
+            
+            return make_response({"error": "Lego not found"}, 404)
+        
+        return make_response(lego.to_dict(), 200)
 
 
 
-# class Userlegos
+class Userlegos(Resource):
+    def get(self):
+        userlegos = Userlego.query.all()
+        userlego_list = [userlego.to_dict(rules=('-user.userlegos',)) for userlego in userlegos]
+        return make_response(userlego_list, 200)
 
 class UserlegoById(Resource):
     def get(self, id):
@@ -100,8 +134,8 @@ class UserlegoById(Resource):
 api.add_resource(Users, '/users',)
 api.add_resource(UserById, '/users/<int:id>',)
 api.add_resource(Legos, '/legos',)
-#api.add_resource(LegoById, '/legos/<int:id>',)
-#api.add_resource(Userlegos, '/userlegos',)
+api.add_resource(LegoById, '/legos/<int:id>',)
+api.add_resource(Userlegos, '/userlegos',)
 api.add_resource(UserlegoById, '/userlegos/<int:id>',)
 
 @app.route('/')
