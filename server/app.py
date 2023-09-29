@@ -36,7 +36,7 @@ def login():
     try:
         user = User.query.filter_by(name=data['name']).first()
         if user and user.check_password(data['password']):
-      
+    
             session['user_id'] = user.id
 
             response = {
@@ -51,13 +51,13 @@ def login():
     
 class Users(Resource):
     def get(self):
-        users = [user.to_dict(rules=('-legos', 'userlegos',)) for user in User.query.all()]
+        users = [user.to_dict() for user in User.query.all()]
         return make_response(users, 200)
     
     def post(self):
         new_user = User()
         data = request.get_json()
-      
+    
         try:
             for key in data:
                 setattr(new_user, key, data[key])
@@ -83,9 +83,7 @@ class UserById(Resource):
 
 class Legos(Resource):
     def get(self):
-        legos = [lego.to_dict(rules=('-userlegos', '-user',)) 
-            
-        for lego in Legos.query.all()]
+        legos = [lego.to_dict() for lego in Lego.query.all()]
         return make_response(legos, 200)
     
 
@@ -99,12 +97,10 @@ class LegoById(Resource):
         
         return make_response(lego.to_dict(), 200)
 
-
-
 class Userlegos(Resource):
     def get(self):
         userlegos = Userlego.query.all()
-        userlego_list = [userlego.to_dict(rules=('-user.userlegos',)) for userlego in userlegos]
+        userlego_list = [userlego.to_dict() for userlego in userlegos]
         return make_response(userlego_list, 200)
 
 class UserlegoById(Resource):
@@ -123,7 +119,7 @@ class UserlegoById(Resource):
                 setattr(new_lego, key, data[key])
             db.session.add(new_lego)
             db.session.commit()
-            return make_response(new_lego.to_dict(rules=('-legos', '-user',)), 201) 
+            return make_response(new_lego.to_dict(), 201) 
         
         except ValueError as error:
             new_error = {"validation errors": str(error)}

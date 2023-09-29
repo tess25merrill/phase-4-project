@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import LegoList from "./LegoList";
 import LegoForm from "./LegoForm";
+import NavBar from './NavBar';
 
 function Inventory(){
     
@@ -12,7 +13,7 @@ function Inventory(){
     }
 
     const fetchLegos = () => {
-        fetch("http://localhost:5555/userlegos")
+        fetch("http://localhost:5555/legos")
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -54,7 +55,11 @@ function Inventory(){
     }
 
     return (
-        <>
+        <>  
+        <NavBar />
+        <LegoForm 
+            legoToEdit={legoToEdit}
+            updateLegoInfo={updateLegoInfo}/>
             <LegoForm 
                 legoToEdit={legoToEdit}
                 updateLegoInfo={updateLegoInfo}/>

@@ -18,7 +18,12 @@ class User(db.Model, SerializerMixin):
 
     userlegos = db.relationship('Userlego', cascade='all, delete', backref='user')
 
-    serialize_rules = ("-userlegos.user",)
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'password': self.name
+        }
 
     validation_errors = []
 
@@ -45,13 +50,19 @@ class Lego (db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key = True)
     piece_num = db.Column(db.Integer, nullable=False)
+    count = db.Column(db.Integer, nullable = False)
 
 #relationships
 
-    userlegos = db.relationship('Userlego', cascade='all, delete', backref='lego')
+    userlegos = db.relationship('Userlego', cascade='all, delete', backref='legos')
 
 #serialization
-    serialize_rules = ("-userlegos.lego")
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'piece_num': self.piece_num,
+            'count': self.count
+        }
 
 #Validations
     validation_errors = []
@@ -78,7 +89,13 @@ class Userlego (db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 #serialization
-    serialize_rules = ("-lego.userlegos", "-user.userlegos")
+    def to_dict(self):
+        return{
+            'id': self.id,
+            'count': self.count,
+            'lego_id': self.lego_id,
+            'user_id': self.user_id
+        }
 
 #Validations
     validation_errors = []
