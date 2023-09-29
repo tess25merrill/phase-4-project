@@ -26,6 +26,7 @@ import Login from './components/Login';
         <Switch>
           <Route path="/inventory" component={Inventory} /> {/* Route to the Inventory component */}
           <Route path="/login" component={Login}/> {/* Route to the Login component */}
+          <Route path="/account" component={Account}/> {/* Route to the Account component */}
         </Switch>
       </div>
     </Router>
