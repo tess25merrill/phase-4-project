@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import NavBar from './NavBar';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -78,6 +79,7 @@ function Login() {
    
   return (
     <div>
+      <NavBar />
       {isCreatingAccount ? (
         <div>
           <h2>Create Account</h2>

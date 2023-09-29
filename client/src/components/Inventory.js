@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import LegoList from "./LegoList";
 import LegoForm from "./LegoForm";
+import NavBar from './NavBar';
+
 
 function Inventory(){
     
@@ -54,7 +56,7 @@ function Inventory(){
     }
 
     return (
-        <>
+        <>  <NavBar />
             <LegoForm 
                 legoToEdit={legoToEdit}
                 updateLegoInfo={updateLegoInfo}/>

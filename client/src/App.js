@@ -23,7 +23,6 @@ import Login from './components/Login';
     <Router>
       <div className="App">
         <Header />
-        <NavBar /> {/* Include the NavBar component */}
         <Switch>
           <Route path="/inventory" component={Inventory} /> {/* Route to the Inventory component */}
           <Route path="/login" component={Login}/> {/* Route to the Login component */}
