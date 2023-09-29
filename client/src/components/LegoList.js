@@ -13,14 +13,7 @@ function LegoList({renderForm, legos}) {
     })
 
     return (
-        <table className="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Design ID</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Edit</th>
-                </tr>
-            </thead>
+        <table>
             <tbody>
                 {renderLegos}
             </tbody>

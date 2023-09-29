@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import Inventory from "./Inventory";
 
 function LegoForm({legoToEdit, updateLegoInfo}) {
 
